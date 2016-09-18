@@ -79,5 +79,5 @@ server.listen(process.env.port || 3978, function () {
 });
 
 server.get('/home',function(req,res){
-	res.send("server is running");
+	res.send("server is running test by rest api");
 });
