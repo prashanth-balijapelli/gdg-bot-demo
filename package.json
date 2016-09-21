@@ -2,12 +2,15 @@
   "name": "gdg_devfest_2016",
   "version": "1.0.0",
   "description": "basic introduction about bot ecosystem",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Gaurav Sharma",
-  "license": "ISC",
+  "engines": {
+    "node": "~4.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "monitor": "nodemon app.js",
+    "deploy": "gcloud app deploy"
+  },
   "dependencies": {
     "botbuilder": "^3.2.3",
     "restify": "^4.1.1"
