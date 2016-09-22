@@ -62,7 +62,7 @@ intents.onDefault([
 
 bot.dialog('/profile', [
     function (session) {
-        builder.Prompts.text(session, 'Hi! What is your name?');
+        builder.Prompts.text(session, 'Hi! Lets know each other.');
     },
     function (session, results) {
         session.userData.name = results.response;
