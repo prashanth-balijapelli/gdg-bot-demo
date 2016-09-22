@@ -44,19 +44,20 @@ var bot = new builder.UniversalBot(connector);
 //         session.endDialog();
 //     }
 // ]);
-
-// // Setup Restify Server
-// var server = restify.createServer();
-
-// server.post('/api/messages', connector.listen());
-// server.listen(process.env.port || 8080, function () {
-//     console.log('%s listening to %s', server.name, server.url); 
-// });
-
-// server.get('/home',function(req,res){
-// 	res.send("server is running test by rest api");
-// });
 //---------------------------------------------------------------------------------------------------------------------------
+
+// Setup Restify Server
+var server = restify.createServer();
+
+server.post('/api/messages', connector.listen());
+server.listen(process.env.port || 8080, function () {
+    console.log('%s listening to %s', server.name, server.url); 
+});
+
+server.get('/home',function(req,res){
+	res.send("server is running test by rest api");
+});
+
 //=========================================================
 // Activity Events
 //=========================================================
