@@ -170,13 +170,10 @@ bot.dialog('/', [
 bot.dialog('/profile', [
     function (session) {
         session.send("Hi.. I'm your personal assistent bot for GDG Devfest HYD. I am glad you are here.");
-        builder.Prompts.text(session, 'What is your name.');
+        builder.Prompts.text(session, 'What is your name ?');
     },
     function (session, results) {
         session.userData.name = results.response;
-        
-    },
-    function (session, results) {
         session.send('Hello %s!', session.userData.name);
         session.endDialog();
     }
