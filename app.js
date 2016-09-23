@@ -154,7 +154,7 @@ bot.dialog('/', [
             ]);
         var msg = new builder.Message(session).attachments([card]);
         session.send(msg);
-        session.send("Hi... I'm the Microsoft Bot Framework demo bot for Skype. I can show you everything you can use our Bot Builder SDK to do on Skype.");
+        session.beginDialog("/profile");
         session.beginDialog('/help');
     },
     function (session, results) {
@@ -164,6 +164,21 @@ bot.dialog('/', [
     function (session, results) {
         // Always say goodbye
         session.send("Ok... See you later!");
+    }
+]);
+
+bot.dialog('/profile', [
+    function (session) {
+        session.send("Hi.. I'm your personal assistent bot for GDG Devfest HYD. I am glad you are here.");
+        builder.Prompts.text(session, 'What is your name.');
+    },
+    function (session, results) {
+        session.userData.name = results.response;
+        
+    },
+    function (session, results) {
+        session.send('Hello %s!', session.userData.name);
+        session.endDialog();
     }
 ]);
 
