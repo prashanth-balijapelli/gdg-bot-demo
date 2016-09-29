@@ -7,57 +7,6 @@ var connector = new builder.ChatConnector({
 	appPassword:'1Ujqf1p5129WNHQujUCik62'});
 
 var bot = new builder.UniversalBot(connector);  
-// bot.dialog('/', function (session) {
-//     session.send('what ever you say this my final answer');
-// });
-// var intents = new builder.IntentDialog();
-// bot.dialog('/', intents);
-
-// intents.matches(/^change name/i, [
-//     function (session) {
-//         session.beginDialog('/profile');
-//     },
-//     function (session, results) {
-//         session.send('Ok... Changed your name to %s', session.userData.name);
-//     }
-// ]);
-
-// intents.onDefault([
-//     function (session, args, next) {
-//         if (!session.userData.name) {
-//             session.beginDialog('/profile');
-//         } else {
-//             next();
-//         }
-//     },
-//     function (session, results) {
-//         session.send('Hello %s!', session.userData.name);
-//     }
-// ]);
-
-// bot.dialog('/profile', [
-//     function (session) {
-//         builder.Prompts.text(session, 'Hi! Lets know each other.');
-//     },
-//     function (session, results) {
-//         session.userData.name = results.response;
-//         session.endDialog();
-//     }
-// ]);
-
-// // Setup Restify Server
-// var server = restify.createServer();
-
-// server.post('/api/messages', connector.listen());
-// server.listen(process.env.port || 8080, function () {
-//     console.log('%s listening to %s', server.name, server.url); 
-// });
-
-// server.get('/home',function(req,res){
-// 	res.send("server is running test by rest api");
-// });
-
-//---------------------------------------------------------------------------------------------------------------------------
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -113,7 +62,7 @@ bot.on('contactRelationUpdate', function (message) {
         var name = message.user ? message.user.name : null;
         var reply = new builder.Message()
                 .address(message.address)
-                .text("Hello %s... Thanks for adding me. Say 'hello' to see some great demos.", name || 'there');
+                .text("Thanks for adding me. Say 'hello' to see some great demos.");
         bot.send(reply);
     } else {
         // delete their data
@@ -150,7 +99,7 @@ bot.dialog('/', [
             .title("GDG BOT")
             .text("Your personal assistent for GDG Devfest HYD 2016.")
             .images([
-                 builder.CardImage.create(session, "https://i.imgsafe.org/465769824b.jpg")
+                 builder.CardImage.create(session, "https://i.imgsafe.org/d0d9babd36.png")
             ]);
         var msg = new builder.Message(session).attachments([card]);
         session.send(msg);
