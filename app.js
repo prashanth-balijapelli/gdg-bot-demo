@@ -1,19 +1,20 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var host = "https://gdgbot.azurewebsites.net";
+var host = "https://c0d36ce9.ngrok.io/images/";
 
-// Create bot and add dialogs
-var connector = new builder.ChatConnector({
-    appId: '2ec83f66-8f45-4852-82cf-cf1602225bd9',
-    appPassword: '1Ujqf1p5129WNHQujUCik62'
-});
 
-if (process.env.DEV = 'DEV') {
+if (process.env.DEV == 'DEV') {
 
     var connector = new builder.ConsoleConnector().listen();
     var bot = new builder.UniversalBot(connector);
 
 } else {
+
+    // Create bot and add dialogs
+    var connector = new builder.ChatConnector({
+        appId: '2ec83f66-8f45-4852-82cf-cf1602225bd9',
+        appPassword: '1Ujqf1p5129WNHQujUCik62'
+    });
 
     var bot = new builder.UniversalBot(connector);
     // Setup Restify Server
@@ -22,20 +23,14 @@ if (process.env.DEV = 'DEV') {
         console.log('%s listening to %s', server.name, server.url);
     });
 
-    // Create chat bot
-    var connector = new builder.ChatConnector({
-        appId: process.env.MICROSOFT_APP_ID,
-        appPassword: process.env.MICROSOFT_APP_PASSWORD
-    });
-    var bot = new builder.UniversalBot(connector);
     server.post('/api/messages', connector.listen());
 
     server.get('/home', function(req, res) {
         res.send("server is running test by rest api");
     });
 
-    server.get(/\/images\/?.*/, restify.serverStatic({
-        directory: './images'
+    server.get(/\/images\/?.*/, restify.serveStatic({
+        directory: './media'
     }));
     ///=========================================================
     // Activity Events
@@ -154,11 +149,12 @@ bot.dialog('/profile', [
 
 bot.dialog('/menu', [
     function(session) {
-        builder.Prompts.choice(session, session.userData.name + " , What demo would you like to run?", "About|Schedule|Speaker|Globalllery|Sponser|Venue");
+        builder.Prompts.choice(session, session.userData.name + " , How can I help you today ?", "About|Schedule|Speakers|Gallery|Sponser|Venue|Team");
     },
     function(session, results) {
         if (results.response && results.response.entity != '(quit)') {
             // Launch demo dialog
+
             session.beginDialog('/' + results.response.entity);
         } else {
             // Exit the menu
@@ -248,13 +244,259 @@ bot.dialog('/About', [
 
                     + " GDG Hyderabad believes that technology is not only easy to apply in our daily lives but it is also easy to build one on our own. And since, to learn something there are no constraints, anyone can attend the session and  get a hands-on idea of the the latest developments of technical world.")
                 .images([
-                    builder.CardImage.create(session, host + "/images/gdglogo-4.jpg")
+                    builder.CardImage.create(session, host + "gdglogo-4.jpg")
                 ])
                 //.tap(builder.CardAction.openUrl(session, ""))
             ]);
         session.send(msg);
 
         session.endDialog();
+    }
+]);
+
+bot.dialog('/Schedule', [
+    function(session) {
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.ThumbnailCard(session)
+                .title("Welcome Address")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "google-1-1-180x180.png")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("Getting Started with Kubernetes")
+                .text("by Mr. Janakiram MSV, Analyst, Advisor & Architect at                               Janakiram & Associates ")
+                .images([
+                    builder.CardImage.create(session, host + "kubernetes-180x180.jpg")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("India and VR - Challenges and Opportunities")
+                .text("by Mr. Jignesh Talasila, Founder & CEO, Loop Reality")
+                .images([
+                    builder.CardImage.create(session, host + "vr-icon-180x180.png")
+                ]),
+
+
+                new builder.ThumbnailCard(session)
+                .title("Firebase Overview")
+                .text("by Mr. Mustafa Ali, Director of Technology, Mutual Mobile")
+                .images([
+                    builder.CardImage.create(session, host + "android-1-180x180.png")
+                ])
+            ]);
+        session.send(msg);
+
+
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.ThumbnailCard(session)
+                .title("Build Real-time Web App using Angular 2 & Firebase")
+                .text("by Mr. Keerti Kotaru & Mr. Ravi Kiran, ng-Hyderabad")
+                .images([
+                    builder.CardImage.create(session, host + "ng-fire-180x180.png")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("Javascript & IoT (Internet of Things)")
+                .text("by Mr. Arvind Ravulavaru, The IoT Suitcase")
+                .images([
+                    builder.CardImage.create(session, host + "m2m-icon-336-300x300-180x180.png")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("Introduction to LLVM Compiler Infrastructer")
+                .text("by Mr. Utpal Bora & Mr. Pratik Bhatu")
+                .images([
+                    builder.CardImage.create(session, host + "unnamed-2-180x180.png")
+                ]),
+
+
+                new builder.ThumbnailCard(session)
+                .title("Getting started with Machine Learning")
+                .text("by Mr. Anudeep Sai, GDG Hyderabad")
+                .images([
+                    builder.CardImage.create(session, host + "Machine-1-180x180.jpg")
+                ])
+            ]);
+        session.send(msg);
+
+
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.ThumbnailCard(session)
+                .title("Code Lab on BOTS - Future of Apps")
+                .text("by Mr. Gaurav Sharma, Pramati Technologies")
+                .images([
+                    builder.CardImage.create(session, host + "unnamed-1-180x180.png")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("MVVM Architecture with Dagger 2 & Databinding")
+                .text("by Mr. Tushar Acharya, Mutual Mobile")
+                .images([
+                    builder.CardImage.create(session, host + "unnamed-180x180.png")
+                ]),
+
+
+
+                new builder.ThumbnailCard(session)
+                .title("How ‘NOT-TO’ Develop Apps")
+                .text("by Mr. Surya & Mr. Kaushik, Primeauth")
+                .images([
+                    builder.CardImage.create(session, host + "Primeauth-180x180.png")
+                ]),
+
+
+                new builder.ThumbnailCard(session)
+                .title("Code Lab on RxAndroid")
+                .text("by Mr. Raviteja, Hug Innovations")
+                .images([
+                    builder.CardImage.create(session, host + "RxAndroid-180x180.png")
+                ])
+            ]);
+        session.send(msg);
+
+
+        session.endDialog();
+    }
+]);
+
+
+bot.dialog('/Gallery', [
+    function(session) {
+
+
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([])
+                .buttons([
+                    builder.CardAction.openUrl(session, "https://plus.google.com/photos/114190263289122404629/albums/6223696620835289329", "GDG Devfest 2015"),
+                    builder.CardAction.openUrl(session, "https://plus.google.com/events/gallery/c0eugd0po6qv9jlf3ji31pm35dk", "GDG Devfest 2014"),
+                    builder.CardAction.openUrl(session, "https://plus.google.com/photos/114190263289122404629/albums/6330843510147583633", "GDG Devfest 2013"),
+                    builder.CardAction.openUrl(session, "https://plus.google.com/events/gallery/c4vaokuckf0qs1v42gbjnmlg0ts?sort=1", "GDG Devfest 2012"),
+                ])
+            ]);
+        bot.send(msg);
+
+        session.endDialog();
+
+    }
+]);
+
+bot.dialog('/Sponser', [
+    function(session) {
+
+
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "googledevelopers-1.png"),
+                ])
+                .buttons([])
+            ]);
+        bot.send(msg);
+
+
+        msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "google-1.png"),
+                ])
+                .buttons([])
+            ]);
+        bot.send(msg);
+
+        msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "ng.png"),
+                ])
+                .buttons([])
+            ]);
+        bot.send(msg);
+
+        msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "Studio-Torque.png"),
+                ])
+                .buttons([])
+            ]);
+        bot.send(msg);
+
+        session.endDialog();
+
+
+    }
+]);
+
+
+bot.dialog('/Venue', [
+    function(session) {
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("")
+                .text("")
+                .images([
+                    builder.CardImage.create(session, host + "place.png")
+                    .tap(builder.CardAction.openUrl(session, "https://www.google.co.in/maps/place/Google/@17.458937,78.3714451,17z/data=!3m1!5s0x3bcb93cfcfec28ef:0xc0a2814c699c356f!4m13!1m7!3m6!1s0x3bcb93cfd7adcc4d:0x5c7c79f370c8bf7!2sDivyaSree+Omega+Hi-Tech+City+Hyderabad!3b1!8m2!3d17.458937!4d78.3736338!3m4!1s0x0:0xcfcead772f6ce1c9!8m2!3d17.4583639!4d78.3724543"))
+                ])
+                .buttons([])
+
+            ]);
+        bot.send(msg);
+
+
+        session.endDialog();
+
+
     }
 ]);
 
@@ -386,6 +628,259 @@ bot.dialog('/carousel', [
         session.endDialog('You %s "%s"', action, item);
     }
 ]);
+
+
+bot.dialog('/Speakers', [
+    function(session) {
+        //session.send("You can pass a custom message to Prompts.choice() that will present the user with a carousel of cards to select from. Each card can even support multiple actions.");
+
+        // Ask the user to select an item from a carousel.
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("Jignesh Talasila")
+                .subtitle("Founder & CEO")
+                .text("Loop Reality")
+                .images([
+                    builder.CardImage.create(session, host + "198c3b3.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/jigneshtalasila")),
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Janakiram MSV")
+                .subtitle("Analyst, Advisor & Architect")
+                .text("Janakiram & Associates")
+                .images([
+                    builder.CardImage.create(session, host + "3d2613b.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/janakiramm")),
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Mustafa Ali")
+                .subtitle("Director of Technology")
+                .text("Mutual Mobile")
+                .images([
+                    builder.CardImage.create(session, host + "767705.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/mustafa01ali")),
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Keerti Kotaru")
+                .subtitle("Principal Architect")
+                .text("Cognizant")
+                .images([
+                    builder.CardImage.create(session, host + "keerthikotaru.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/keertikotaru")),
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Ravi Kiran")
+                .subtitle("Senior Engineer - UI")
+                .text("Innominds")
+                .images([
+                    builder.CardImage.create(session, host + "rabikiran.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/s-rabi-kiran-52257a24")),
+                ])
+
+            ]);
+        session.send(msg);
+
+        //==================
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("Guarav Sharma")
+                .subtitle("Sr. Development Engineer")
+                .text("Pramati Technologies")
+                .images([
+                    builder.CardImage.create(session, host + "gaurav.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/gaurav-sharma-0967b328")),
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Surya Subhash")
+                .subtitle("Founder & CEO")
+                .text("Primeauth")
+                .images([
+                    builder.CardImage.create(session, host + "subhash.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/pbssubhash/")),
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Arvind Ravulavaru")
+                .subtitle("Platform Architect")
+                .text("The IoT Suitcase")
+                .images([
+                    builder.CardImage.create(session, host + "arvind.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/arvindravulavaru")),
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Tushar Acharya")
+                .subtitle("Senior Android Engineer II")
+                .text("Mutual Mobile")
+                .images([
+                    builder.CardImage.create(session, host + "230d31b.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/ntusharacharya")),
+                ]),
+
+
+
+                new builder.HeroCard(session)
+                .title("Raviteja Gadipudi")
+                .subtitle("Sr. Android Developer")
+                .text("Hug Innovations")
+                .images([
+                    builder.CardImage.create(session, host + "3385730.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/rgadipudi")),
+                ])
+
+            ]);
+        session.send(msg);
+
+        //===========
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("Anudeep Sai N")
+                .subtitle("Xoogler | Organizer")
+                .text("GDG Hyderabad")
+                .images([
+                    builder.CardImage.create(session, host + "3c75bd4.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/anudeepsai")),
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Kaushik Bharadwaj")
+                .subtitle("Founder & CTO")
+                .text("Primeauth")
+                .images([
+                    builder.CardImage.create(session, host + "dummy-profile.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://github.com/kaushikb1996")),
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Utpal Bora")
+                .subtitle("Research Scholar")
+                .text("IIT Hyderabad")
+                .images([
+                    builder.CardImage.create(session, host + "Utpal.jpg")
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Pratik Bhatu")
+                .subtitle("Student")
+                .text("IIT Hyderabad")
+                .images([
+                    builder.CardImage.create(session, host + "dummy-profile.jpg")
+                    .tap(builder.CardAction.openUrl(session, "https://www.linkedin.com/in/pratik-bhatu-51047bb6")),
+                ])
+
+            ]);
+        session.send(msg);
+
+
+
+        session.endDialog();
+        //builder.Prompts.choice(session, msg, "select:100|select:101|select:102");
+    }
+]);
+
+
+
+bot.dialog('/Team', [
+    function(session) {
+        //session.send("You can pass a custom message to Prompts.choice() that will present the user with a carousel of cards to select from. Each card can even support multiple actions.");
+
+        // Ask the user to select an item from a carousel.
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("Bharath Silagani")
+                .subtitle("Community Lead")
+                .images([
+                    builder.CardImage.create(session, host + "Bharath-Silagani.jpg")
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Sindhoora M")
+                .subtitle("Co-Lead")
+                .images([
+                    builder.CardImage.create(session, host + "3d2613b.jpg")
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Mustafa Ali")
+                .subtitle("Director of Technology")
+                .text("Mutual Mobile")
+                .images([
+                    builder.CardImage.create(session, host + "Sindhoora-Mokshagundam-300x300.jpg")
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Mustafa Ali")
+                .subtitle("Lead")
+                // .text("Cognizant")
+                .images([
+                    builder.CardImage.create(session, host + "Mustafa-Ali-300x300.jpg")
+                ]),
+
+                new builder.HeroCard(session)
+                .title("Pratyusha Simharaju")
+                .subtitle("Lead, Women Techmakers")
+                .images([
+                    builder.CardImage.create(session, host + "Pratyusha-Simharaju-300x300.jpg")
+                ])
+
+            ]);
+        session.send(msg);
+
+        //==================
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([
+                new builder.HeroCard(session)
+                .title("Ayush Jha")
+                .subtitle("Organizer, Hydroid")
+                .images([
+                    builder.CardImage.create(session, host + "Ayusha-Jha-300x300.jpg")
+                ]),
+
+
+                new builder.HeroCard(session)
+                .title("Venkata Dinesh")
+                .subtitle("Organizer, Hydroid")
+                .images([
+                    builder.CardImage.create(session, host + "Venkata-Dinesh-min.jpg")
+                ])
+
+            ]);
+        session.send(msg);
+
+
+
+        session.endDialog();
+        //builder.Prompts.choice(session, msg, "select:100|select:101|select:102");
+    }
+]);
+
 
 bot.dialog('/receipt', [
     function(session) {
