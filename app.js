@@ -1,5 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+var host = "https://gdgbot.azurewebsites.net";
 
 // Create bot and add dialogs
 var connector = new builder.ChatConnector({
@@ -25,8 +26,12 @@ var bot = new builder.UniversalBot(connector);
 
 /*server.get('/home',function(req,res){
 	res.send("server is running test by rest api");
+});*/
+
+server.get(/\/images\/?.*/, restify.serveStatic({
+  directory: './images'
 });
-*///=========================================================
+///=========================================================
 // Activity Events
 //=========================================================
 /*
@@ -133,7 +138,7 @@ bot.dialog('/profile', [
 
 bot.dialog('/menu', [
     function (session) {
-        builder.Prompts.choice(session, session.userData.name+" , What demo would you like to run?", "prompts|picture|cards|list|carousel|receipt|actions|(quit)");
+        builder.Prompts.choice(session, session.userData.name+" , What demo would you like to run?", "About|Schedule|Speaker|Globalllery|Sponser|Venue");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -207,6 +212,32 @@ bot.dialog('/picture', [
         session.endDialog(msg);
     }
 ]);
+
+bot.dialog('/About', [
+    function (session) {
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("GDG HYDERABAD DEVFEST")
+                    //.subtitle("Space Needle")
+                    .text("GDG DevFests are large, community-run events that can offer speaker sessions across multiple product areas, all-day hack-a-thons, code labs, and more. Each GDG DevFest will be inspired by and uniquely tailored to the needs of the developer community that hosts it. " +
+
+ +" GDG Hyderabad celebrates the spirit of being a developer. Hyderabad DevFest can be considered as “Technical Diwali” that celebrates the achievements of computing world and the constant urge to connect, code and innovate."
+
++" GDG Hyderabad believes that technology is not only easy to apply in our daily lives but it is also easy to build one on our own. And since, to learn something there are no constraints, anyone can attend the session and  get a hands-on idea of the the latest developments of technical world.")
+                    .images([
+                        builder.CardImage.create(session, host + "/images/gdglogo-4.jpg")
+                    ])
+                    //.tap(builder.CardAction.openUrl(session, ""))
+            ]);
+        session.send(msg);
+
+        session.endDialog();
+    }
+]);
+
 
 bot.dialog('/cards', [
     function (session) {
