@@ -6,28 +6,30 @@ var connector = new builder.ChatConnector({
 	appId: '2ec83f66-8f45-4852-82cf-cf1602225bd9',
 	appPassword:'1Ujqf1p5129WNHQujUCik62'});
 
-var bot = new builder.UniversalBot(connector);  
+/*var bot = new builder.UniversalBot(connector);*/  
+var connector = new builder.ConsoleConnector().listen();
+var bot = new builder.UniversalBot(connector);
 // Setup Restify Server
-var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
+//var server = restify.createServer();
+/*server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
-  
-// Create chat bot :
+*/  
+// Create chat bot
 // var connector = new builder.ChatConnector({
 //     appId: process.env.MICROSOFT_APP_ID,
 //     appPassword: process.env.MICROSOFT_APP_PASSWORD
 // });
 // var bot = new builder.UniversalBot(connector);
-server.post('/api/messages', connector.listen());
+//server.post('/api/messages', connector.listen());
 
-server.get('/home',function(req,res){
+/*server.get('/home',function(req,res){
 	res.send("server is running test by rest api");
 });
-//=========================================================
+*///=========================================================
 // Activity Events
 //=========================================================
-
+/*
 bot.on('conversationUpdate', function (message) {
    // Check for group conversations
     if (message.address.conversation.isGroup) {
@@ -72,21 +74,21 @@ bot.on('contactRelationUpdate', function (message) {
 bot.on('deleteUserData', function (message) {
     // User asked to delete their data
 });
-
+*/
 
 //=========================================================
 // Bots Middleware
 //=========================================================
 
 // Anytime the major version is incremented any existing conversations will be restarted.
-bot.use(builder.Middleware.dialogVersion({ version: 1.0, resetCommand: /^reset/i }));
+//bot.use(builder.Middleware.dialogVersion({ version: 1.0, resetCommand: /^reset/i }));
 
 //=========================================================
 // Bots Global Actions
 //=========================================================
 
-bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
-bot.beginDialogAction('help', '/help', { matches: /^help/i });
+//bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
+//bot.beginDialogAction('help', '/help', { matches: /^help/i });
 
 //=========================================================
 // Bots Dialogs
@@ -104,7 +106,8 @@ bot.dialog('/', [
         var msg = new builder.Message(session).attachments([card]);
         session.send(msg);
         session.beginDialog("/profile");
-        session.beginDialog('/help');
+        //session.beginDialog('/help');
+
     },
     function (session, results) {
         // Display menu
